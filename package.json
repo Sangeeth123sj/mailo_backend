@@ -1,0 +1,16 @@
+{
+  "name": "mailo_node",
+  "version": "1.0.0",
+  "description": "a nodejs backend for mailo",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sangeeth",
+  "license": "MIT",
+  "dependencies": {
+    "cohere": "^1.1.1",
+    "cohere-ai": "^5.0.2",
+    "express": "^4.18.2"
+  }
+}
