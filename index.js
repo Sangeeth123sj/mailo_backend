@@ -1,4 +1,5 @@
 const cohere = require('cohere-ai')
+require('dotenv').config()
 const express = require('express')
 const app = express()
 
@@ -10,39 +11,41 @@ app.use(function(req, res, next) {
     next();
 });
 
-cohere.init('M8A9xH7mdqfu9qA1fKVi1jsTYlADKDNRO6df7Lxv');
+COHERE_KEY = process.env.COHERE_KEY
+cohere.init('{COHERE_KEY}');
 
 app.get("/", async(req,res) => {
     res.send("hello Mailo")
 });
 
-app.post('/generate', async (req,res) =>{
-try {
-    const response = await cohere.generate({
-        model: 'command-xlarge-20221108',
-        prompt: req.body.prompt,
-        max_tokens: 200,
+app.post('/generate', async (req, res) => {
+    try {
+      const response = await cohere.generate({
+        model: 'command-xlarge-nightly',
+        prompt: 'Write a cold outreach email introducing myself as Susan to the hr to apply 5 day leave.',
+        max_tokens: 300,
         temperature: 0.9,
         k: 0,
-        p: 1,
+        p: 0.75,
         frequency_penalty: 0,
         presence_penalty: 0,
         stop_sequences: [],
         return_likelihoods: 'NONE'
-    });
-    console.log("response",response, "completion:",response.body.generations[0].text)
-    res.send({
+      });
+      console.log(`Prediction: ${response.body.generations[0].text}`);
+  
+      res.send({
         success: true,
         message: response.body.generations[0].text
-        });
+      });
     } catch (error) {
-        res.send({
+      res.send({
         success: false,
-        message: error.message
-        });
+        message: error
+      });
     }
-    
-});
+  });
+  
 
 
  app.listen(8000, () => {
